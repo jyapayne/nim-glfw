@@ -2,7 +2,7 @@
 
 version       = "0.1.0"
 author        = "Joey Yakimowich-Payne"
-description   = "Nimterop template"
+description   = "GLFW Bindings"
 license       = "MIT"
 srcDir        = "src"
 
@@ -10,4 +10,4 @@ srcDir        = "src"
 
 # Dependencies
 
-requires "nim >= 1.0.6", "nimterop#head", "regex"
+requires "nim >= 1.0.6", "https://github.com/jyapayne/nimterop#367ec05", "regex"
