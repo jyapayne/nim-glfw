@@ -15,13 +15,12 @@ const
 
 setDefines(defs.splitLines())
 
-{.passL: "-lpthread".}
 getHeader(
   "glfw3.h",
   giturl = "https://github.com/glfw/glfw",
   outdir = srcDir,
   altNames = "glfw,glfw3",
-  cmakeFlags = &"-DCMAKE_C_FLAGS=-lpthread"
+  cmakeFlags = &"-DCMAKE_C_FLAGS='-lpthread -pthread -lm'"
 )
 
 static:
@@ -35,6 +34,7 @@ static:
 
 cIncludeDir(srcDir/"include"/"GLFW")
 cPluginPath(symbolPluginPath)
+{.passL: "-lm -lpthread -pthread".}
 
 when isDefined(glfw3Static):
   cImport(srcDir/"include"/"GLFW"/"glfw3.h", recurse = true, flags = "-f=ast2 -E__,_ -F__,_ -H")
