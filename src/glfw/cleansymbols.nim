@@ -11,7 +11,6 @@ template camelCase(str: string): string =
     else:
       res.add(str[i])
     i += 1
-  res[0] = res[0].toUpperAscii
   res
 
 template lowerFirstLetter(str, rep: string): string =
@@ -49,6 +48,7 @@ proc onSymbol*(sym: var Symbol) {.exportc, dynlib.} =
     elif sym.kind == nskType:
       if sym.name.startsWith(rep):
         sym.name = camelCase(removeBeginning(sym.name, rep))
+        sym.name[0] = sym.name[0].toUpperAscii
     else:
       sym.name = removeBeginning(sym.name, rep)
 
