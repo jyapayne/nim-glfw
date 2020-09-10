@@ -1,3 +1,4 @@
+import macros
 import os, strutils, strformat
 import nimterop/[cimport, build, globals]
 
@@ -6,6 +7,8 @@ const
   baseDir = ProjectCacheDir
   srcDir = baseDir / "glfw"
   buildDir = srcDir / "buildcache"
+  currentPath = getProjectPath().parentDir().sanitizePath
+  generatedPath = (currentPath / "generated" / "glfw").replace("\\", "/")
   symbolPluginPath = currentSourcePath.parentDir() / "cleansymbols.nim"
   defs = """
     glfw3SetVer=05dd2fa
@@ -36,9 +39,9 @@ cPluginPath(symbolPluginPath)
 {.passL: "-pthread".}
 
 when isDefined(glfw3Static):
-  cImport(srcDir/"include"/"GLFW"/"glfw3.h", recurse = true, flags = "-f=ast2 -E__,_ -F__,_ -H")
+  cImport(srcDir/"include"/"GLFW"/"glfw3.h", recurse = true, flags = "-f=ast2 -E__,_ -F__,_ -H", nimFile = generatedPath / "glfw.nim")
 else:
-  cImport(srcDir/"include"/"GLFW"/"glfw3.h", recurse = true, dynlib = "glfw3LPath", flags = "-f=ast2 -E__,_ -F__,_ -H")
+  cImport(srcDir/"include"/"GLFW"/"glfw3.h", recurse = true, dynlib = "glfw3LPath", flags = "-f=ast2 -E__,_ -F__,_ -H", nimFile = generatedPath / "glfw.nim")
 
 const
   KEY_LAST* = KEY_MENU
