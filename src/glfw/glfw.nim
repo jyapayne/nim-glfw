@@ -31,12 +31,20 @@ when defined(amd64):
 else:
   const dlUrl = "https://github.com/glfw/glfw/releases/download/$1/glfw-$1.bin.WIN32.zip"
 
+proc glfw3PreBuild(outdir, other: string) =
+  rmDir(outdir/"lib-vc2012")
+  rmDir(outdir/"lib-vc2013")
+  rmDir(outdir/"lib-vc2015")
+  rmDir(outdir/"lib-vc2017")
+  rmDir(outdir/"lib-vc2019")
+  rmFile(outdir/"lib-mingw-w64"/"libglfw3.a")
+
 getHeader(
   "glfw3.h",
   giturl = "https://github.com/glfw/glfw",
   dlUrl = dlUrl,
   outdir = srcDir,
-  altNames = "glfw,glfw3",
+  altNames = "glfw3dll,glfw,glfw3",
 )
 
 static:
@@ -48,13 +56,7 @@ static:
 # cOverride:
 #   discard
 
-when defined(windows):
-  when defined(amd64):
-    const inclDir = srcDir / "glfw-3.3.2.bin.WIN64" / "include" / "GLFW"
-  else:
-    const inclDir = srcDir / "glfw-3.3.2.bin.WIN32" / "include" / "GLFW"
-else:
-  const inclDir = srcDir / "include" / "GLFW"
+const inclDir = srcDir / "include" / "GLFW"
 
 cIncludeDir(inclDir)
 cPluginPath(symbolPluginPath)
