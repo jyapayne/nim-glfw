@@ -61,7 +61,10 @@ const inclDir = srcDir / "include" / "GLFW"
 cIncludeDir(inclDir)
 cPluginPath(symbolPluginPath)
 
-{.passL: "-pthread".}
+when defined(macosx):
+  {.passL: "-m64 -framework OpenGL -framework Cocoa -framework IOKit -framework CoreVideo -framework Carbon -framework CoreAudio -lm -pthread".}
+else:
+  {.passL: "-pthread".}
 
 when isDefined(glfw3Static):
   cImport(inclDir/"glfw3.h", recurse = true, flags = "-f=ast2 -E__,_ -F__,_ -H", nimFile = generatedPath / "glfw.nim")
